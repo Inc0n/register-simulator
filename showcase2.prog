@@ -1,0 +1,53 @@
+
+# reg.0 return value
+# reg.1 arguement 1 to function
+# reg.2 counter of 99
+# reg.3 current i
+# reg.31 return address
+
+# initial setup test
+main:
+    mov reg.2 const.100
+    mov reg.3 const.0
+
+main-loop:
+	mov reg.1 reg.3
+	mov reg.31 label.main-loop-continue
+	jump label.square
+
+main-loop-continue:
+    minus reg.2 const.1
+	store reg.3 reg.0
+    add reg.3 const.1
+
+# main-loop-test:
+    test reg.2
+    branch label.main-loop
+	jump label.end
+
+
+# reg.0 store computation
+# reg.1 input number to square
+# reg.2 counter
+# square(reg.1) -> reg.0
+square:
+	# setting up for squareaux
+    push reg.2
+	mov reg.0 const.0
+	mov reg.2 reg.1
+    jump label.square-test
+
+square-aux:
+	# perform computation
+	add reg.0 reg.1
+	minus reg.2 const.1
+
+square-test:
+	test reg.2
+    branch label.square-aux
+    # restore reg.2 before jump back to caller
+    pop reg.2
+	jump reg.31
+
+# the end
+end:
