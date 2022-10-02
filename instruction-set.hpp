@@ -23,14 +23,14 @@ enum class INST {
 	ADD,     // add register1 register2
 	MINUS,	 // minus register1 register2
 	SHIFT,	 // shift register1 num
-    LOAD,    // load register1 <param2>
-    STORE,   // store register1 <param2>
+	LOAD,    // load register1 <param2>
+	STORE,   // store register1 <param2>
 	TEST,	 // test register register0
 	JUMP,	 // jump place register0
 	BRANCH,  // branch place register0
-    PUSH,    // push register
-    POP,     // pop register
-    NOP      // NOP
+	PUSH,    // push register
+	POP,     // pop register
+	NOP      // NOP
 };
 
 enum class tagtype {

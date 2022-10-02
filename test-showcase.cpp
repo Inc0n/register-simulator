@@ -14,8 +14,15 @@ int main(int argc, char *argv[])
     MIPS m;
     std::fstream fs;
 
+		if (argc < 2) {
+				std::cout << "Pass in a program file to run!";
+				exit(1);
+		}
+
+		string program = argv[1]; // "showcase.prog"
+
     // get code file
-    fs.open("showcase.prog", std::fstream::in);
+    fs.open(program, std::fstream::in);
     std::cout << "processing file" << std::endl;
     m.assembleCode(fs);
     fs.close();

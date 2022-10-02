@@ -2,11 +2,11 @@
 CC=g++
 LIB=mips.cpp assembler.cpp instruction-set.cpp debugger.cpp
 APP=main.cpp
-TEST=test-mips.cpp
-CFLAGS=-I./ -Wswitch
+# TEST=test-mips.cpp
+CFLAGS=-I./ -Wswitch -std=c++11
 NAME=mips
 
-all: lib test app
+all: lib app
 
 run: lib app
 	./a.out
@@ -17,12 +17,10 @@ lib:
 app: lib
 	$(CC) $(CFLAGS) $(APP) $(LIB:%.cpp=%.o)
 
-test: lib
-	$(CC) $(CFLAGS) $(TEST) $(LIB:%.cpp=%.o) -lUnitTest++
-	./a.out
-
+# This is the test
 showcase: lib
-	$(CC) $(CFLAGS) test-showcase.cpp $(LIB:%.cpp=%.o) -lUnitTest++
+	$(CC) $(CFLAGS) test-showcase.cpp $(LIB:%.cpp=%.o)
+# -lUnitTest++
 	./a.out
 
 clean:

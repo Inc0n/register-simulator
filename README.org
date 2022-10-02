@@ -1,6 +1,65 @@
 
-* register-simulator
-A register based simulator heavily inspired and influenced from design outlined in 5th chapter of SICP.
+# * features
+# debugging (breakpoints)
+# assembler (inst -> encoded instruction)
 
-* TODO Showcase
+* Register simulator
+This simulator was intended for a MIPS Architecture coursework, there were a lot of creative freedom allowed, which is why a lot of the ideas were borrowed from the register machine design outlined in 5th chapter of SICP (Structure of Interpretation of Computer Programming).
+
+The meaning of the arguments to the instructions are differentiated with tags, i.e. ~reg.<i>~, ~cons.<i>~ or ~label.<name>~. This means that there are a lot of flexibility in a machine such as this. For example, the ~mov~ instruction can be used to move either the content of a register, a constant, or a label into another register.
+
+In the bigger picture, instruction themselves are tagged values that tells the machine how to operate on its parameters...
+
+** Encoding
+This unconventional style does have a cost, the instruction encoding. To cram instruction into 32 bits length, there are 4 bits needed to encode 12 different instructions (see ~enum class INST~ in =instruction-set.hpp=), it leaves 28 bits for two arguments, each argument can be of any of the 6 tags type defined (see ~enum class tagtype~ in the same file), 3 bits to encode. This means that the constant can be of ~28/2-3 = 9~ bits, which is in the range of 0-512.
+
+# For instructions
+# 12 inst states, 6 params states, #b1111 #b111
+
+* Registers
+There are 32 registers as there was 32 registers in MIPS as well.
+It has 4k Bytes of Memory (see ~MIPS::MIPS()~ in =mips.cpp=).
+
+The assembler provided no syntax sugar for register names, which means numeric register naming had to be used, e.g. ~reg.<i>~. This makes things simpler to implement.
+
+* Assembly (ISA)
+| Instruction | Arguments      | C like pseudo code        |
+|-------------+----------------+---------------------------|
+| push        | <place>        | *(<stack>--) = *place     |
+| pop         | <place>        | *place = <stack>--        |
+| mov         | <place> <x>    | *place = x                |
+| add         | <place> <x>    | *place = *place + *x      |
+| minus       | <place> <x>    | *place = *place - *x      |
+| test        | <place>        | <flag> = *place           |
+| branch      | <label or reg> | if <flag>: <pc> = ...     |
+| jump        | <label or reg> | <pc> = ...                |
+| store       | <place> <x>    | <mem>[*place] = *x        |
+| load        | <place> <x>    | <reg>[*place] = <mem>[*x] |
+
+Additional syntax/notes
+- ~<place> = register \vert constant~
+  Therefore, <place> is either ~reg.<i>~ or ~const.<i>~, indicating which register, and integer constant.
+- the de-reference operator '*' here means unwrap ~place~ into numeric value, where ~value = constant | register constant~
+- <x> are <place>s
+- Labels get translated to instruction index.
+
+Label names can be defined as a mix of alphabets and hyphen, where its body (list of instruction) can be defined after the colons:
+#+begin_src c
+main:
+    mov reg.2 const.100
+    mov reg.3 const.0
+#+end_src
+
+* Showcase
+
+The program defined in =program/showcase.prog= is used for testing, it squares 0-99 into the memory starting from 0. It can be roughly translated to the following c code. 
+
+#+begin_src c 
+int* mems = malloc(sizeof(int), 100);
+int square_hundred() {
+		for (int i = 99; i > 0; i++) {
+				mems[i] = i*i;
+		}
+}
+#+end_src
 

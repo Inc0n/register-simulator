@@ -16,9 +16,9 @@ using namespace std;
 MIPS::MIPS() :
 	registers(vector<int_t>(NUMREGISTERS,0)),
 	memory(vector<int_t>(NUMMEMORIES, 0)),
-    stack(std::stack<int_t>()),
+	stack(std::stack<int_t>()),
 	code(vector<Instruction>()),
-    breakpoints(vector<Breakpoint>()),
+	breakpoints(vector<Breakpoint>()),
 	pc(0)
 {}
 

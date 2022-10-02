@@ -345,7 +345,7 @@ std::vector<int_t> encodeInstruction(const Instruction &i) {
     std::vector<int_t> encode = {(int_t)inst};
 	std::vector<int_t> param = encodeParam(i.params[0]);
 	encode.insert(encode.end(), param.begin(), param.end());
-    //
+	//
 	param = encodeParam(i.params[1]);
 	encode.insert(encode.end(), param.begin(), param.end());
 	return encode;
